@@ -10,7 +10,6 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Убираем синий tap highlight на телефоне */
         .nav-links a,
         .btn,
         .theme-toggle,
@@ -31,6 +30,27 @@
             scroll-behavior: smooth;
             overflow-x: hidden;
             transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Фон Minecraft (без снежинок) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.25;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        body.light-theme::before {
+            background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6a/Day_Minecraft_background.jpeg/revision/latest?cb=20220202204420');
+            opacity: 0.2;
         }
         
         ::-webkit-scrollbar { width: 8px; }
@@ -309,31 +329,9 @@
         .accent { color: #8acaff; }
         body.light-theme .accent { color: #c49a6c; }
 
+        /* Убираем старые снежинки */
         .snowflakes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .snowflake {
-            position: absolute;
-            background: #8acaff;
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: fallSnow linear infinite;
-            box-shadow: 0 0 5px rgba(138,202,255,0.5);
-        }
-        body.light-theme .snowflake {
-            background: #ffd700;
-            box-shadow: 0 0 5px rgba(255,215,0,0.5);
-        }
-        @keyframes fallSnow {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.3; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            display: none;
         }
 
         .object-container {
@@ -593,7 +591,6 @@
         .rank-2 { color: #c0c0c0; font-weight: bold; }
         .rank-3 { color: #cd7f32; font-weight: bold; }
 
-        /* ОПТИМИЗИРОВАННАЯ КАРТА - вместо placeholder */
         .map-preview {
             background: linear-gradient(145deg, #111827, #0f1422);
             border-radius: 28px;
@@ -652,7 +649,6 @@
         }
         .feature-card:hover .feature-icon { transform: scale(1.1) rotate(5deg); }
 
-        /* ===== ЦИФРЫ 01 02 03 ===== */
         .step {
             background: linear-gradient(145deg, #111827, #0f1422);
             padding: 36px 28px;
@@ -890,7 +886,8 @@
 </head>
 <body>
 
-    <div class="snowflakes" id="snowflakes"></div>
+    <!-- Снежинки удалены -->
+    
     <div class="explode-flash" id="explodeFlash"></div>
 
     <div class="object-tooltip" id="objectTooltip">🌙 НАЖМИ НА ЛУНУ 🌙</div>
@@ -1088,25 +1085,7 @@
     <script>
         AOS.init({ duration: 800, once: false, mirror: true, offset: 50 });
 
-        function createSnowflakes() {
-            const container = document.getElementById('snowflakes');
-            if (!container) return;
-            container.innerHTML = '';
-            for (let i = 0; i < 80; i++) {  // уменьшил с 100 до 80
-                const flake = document.createElement('div');
-                flake.classList.add('snowflake');
-                const size = Math.random() * 6 + 2;
-                flake.style.width = size + 'px';
-                flake.style.height = size + 'px';
-                flake.style.left = Math.random() * 100 + '%';
-                flake.style.animationDelay = Math.random() * 15 + 's';
-                flake.style.animationDuration = Math.random() * 5 + 3 + 's';
-                flake.style.opacity = Math.random() * 0.6 + 0.2;
-                flake.style.background = `#${Math.floor(Math.random()*16777215).toString(16)}`;
-                container.appendChild(flake);
-            }
-        }
-        createSnowflakes();
+        // Функция снежинок удалена
 
         const mobileBtn = document.getElementById('mobileMenuBtn');
         const navUl = document.getElementById('navLinks');
@@ -1191,7 +1170,7 @@
             }
         }
 
-        // 3D объект с оптимизированными текстурами (512x512 вместо 1024x1024)
+        // 3D объект
         const objectContainer = document.getElementById('objectBtn');
         const canvas = document.getElementById('objectCanvas');
         
@@ -1215,14 +1194,14 @@
             
             const objectGroup = new THREE.Group();
             
-            // ОПТИМИЗАЦИЯ: текстуры 512x512 вместо 1024x1024
+            // Текстуры 512x512
             const canvasMoon = document.createElement('canvas');
             canvasMoon.width = 512;
             canvasMoon.height = 512;
             const ctxMoon = canvasMoon.getContext('2d');
             ctxMoon.fillStyle = '#aaaaaa';
             ctxMoon.fillRect(0, 0, canvasMoon.width, canvasMoon.height);
-            for (let i = 0; i < 400; i++) {  // уменьшил кратеры с 800 до 400
+            for (let i = 0; i < 400; i++) {
                 const radius = Math.random() * 15 + 3;
                 const x = Math.random() * canvasMoon.width;
                 const y = Math.random() * canvasMoon.height;
@@ -1246,7 +1225,7 @@
             const ctxSun = canvasSun.getContext('2d');
             ctxSun.fillStyle = '#ffaa33';
             ctxSun.fillRect(0, 0, canvasSun.width, canvasSun.height);
-            for (let i = 0; i < 1000; i++) {  // уменьшил точки с 2000 до 1000
+            for (let i = 0; i < 1000; i++) {
                 ctxSun.fillStyle = `rgba(255, ${100 + Math.random() * 100}, ${50 + Math.random() * 50}, ${0.4 + Math.random() * 0.5})`;
                 const x = Math.random() * canvasSun.width;
                 const y = Math.random() * canvasSun.height;
@@ -1277,7 +1256,7 @@
                 metalness: 0.2
             });
             
-            const sphereGeo = new THREE.SphereGeometry(0.9, 64, 64);  // уменьшил сегменты с 128 до 64
+            const sphereGeo = new THREE.SphereGeometry(0.9, 64, 64);
             const sphere = new THREE.Mesh(sphereGeo, moonMaterial);
             objectGroup.add(sphere);
             
@@ -1287,7 +1266,7 @@
                 opacity: 0.12,
                 side: THREE.BackSide
             });
-            const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.98, 32, 32), glowMat);  // уменьшил сегменты
+            const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.98, 32, 32), glowMat);
             objectGroup.add(glowSphere);
             
             scene.add(objectGroup);
@@ -1379,7 +1358,7 @@
             const explodeFlash = document.getElementById('explodeFlash');
             
             function createExplodeParticles(x, y) {
-                for (let i = 0; i < 60; i++) {  // уменьшил частицы с 80 до 60
+                for (let i = 0; i < 60; i++) {
                     const particle = document.createElement('div');
                     particle.style.position = 'fixed';
                     particle.style.width = (Math.random() * 6 + 2) + 'px';
