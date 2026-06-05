@@ -593,6 +593,7 @@
         .rank-2 { color: #c0c0c0; font-weight: bold; }
         .rank-3 { color: #cd7f32; font-weight: bold; }
 
+        /* ОПТИМИЗИРОВАННАЯ КАРТА - вместо placeholder */
         .map-preview {
             background: linear-gradient(145deg, #111827, #0f1422);
             border-radius: 28px;
@@ -603,6 +604,31 @@
             text-align: center;
         }
         .map-preview:hover { transform: scale(1.02); box-shadow: 0 20px 30px -15px rgba(0,0,0,0.5); }
+        .map-preview .map-image {
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(circle at 30% 40%, #2a4a7a, #1a3a5a);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .map-preview .map-image::before {
+            content: "🗺️";
+            font-size: 4rem;
+            opacity: 0.5;
+        }
+        .map-preview .map-image::after {
+            content: "JOTUNHEIM";
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            letter-spacing: 2px;
+        }
+        body.light-theme .map-preview .map-image {
+            background: radial-gradient(circle at 30% 40%, #c49a6c, #a87b4a);
+        }
         .map-overlay { padding: 20px; background: rgba(10,14,26,0.9); }
 
         .feature-card {
@@ -645,17 +671,16 @@
         .step-number {
             font-size: 3rem;
             font-weight: 800;
-            color: #cccccc;                         /* не такой светлый (приглушённый) */
+            color: #cccccc;
             margin-bottom: 20px;
-            text-shadow: 0 0 6px rgba(90, 138, 186, 0.3);  /* слабое свечение */
+            text-shadow: 0 0 6px rgba(90, 138, 186, 0.3);
             transition: transform 0.3s;
         }
         .step:hover .step-number { transform: scale(1.1); }
         
-        /* Светлая тема для цифр 01 02 03 — без синего */
         body.light-theme .step-number {
-            color: #8b5a2b;                         /* золотисто-коричневый */
-            text-shadow: none;                       /* убрал синее свечение полностью */
+            color: #8b5a2b;
+            text-shadow: none;
         }
 
         .testimonial {
@@ -837,6 +862,7 @@
             footer { padding: 32px 20px 24px; gap: 12px; }
             footer .logo { font-size: 1.2rem; }
             footer p { font-size: 0.8rem; }
+            .map-preview .map-image { height: 150px; }
         }
         
         @media (max-width: 768px) {
@@ -875,7 +901,7 @@
 
     <div class="mobile-ip-panel" id="mobileIpPanel">
         <i class="fas fa-copy"></i>
-        <span>play.jotunheim.ru</span>
+        <span>mc.jotunheim.ru</span>
         <span class="ip-label">нажми для копирования</span>
     </div>
 
@@ -948,7 +974,7 @@
         <h2 class="section-title">🗺️ Карта мира</h2>
         <div class="section-subhead">Исследуй территории JOTUNHEIM в реальном времени</div>
         <div class="map-preview" id="mapLink" data-aos="zoom-in">
-            <img src="https://via.placeholder.com/1200x500/1a2333/5a8aba?text=JOTUNHEIM+MAP" alt="Карта сервера">
+            <div class="map-image"></div>
             <div class="map-overlay">
                 <i class="fas fa-map-marked-alt" style="font-size: 1.5rem; color: #5a8aba;"></i>
                 <p style="margin-top: 10px;">Интерактивная карта мира</p>
@@ -1029,7 +1055,7 @@
             <p style="max-width: 500px; margin: 0 auto;">Версии Minecraft: 1.20.4 — 1.21.1 | Java Edition</p>
             
             <div class="ip-display" id="ipDisplay">
-                <span>play.jotunheim.ru</span>
+                <span>mc.jotunheim.ru</span>
                 <div class="ip-hint" id="ipHint">🌙 Нажми на луну/солнце 🌙</div>
             </div>
             
@@ -1066,7 +1092,7 @@
             const container = document.getElementById('snowflakes');
             if (!container) return;
             container.innerHTML = '';
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {  // уменьшил с 100 до 80
                 const flake = document.createElement('div');
                 flake.classList.add('snowflake');
                 const size = Math.random() * 6 + 2;
@@ -1102,7 +1128,7 @@
         });
 
         const mobileIpPanel = document.getElementById('mobileIpPanel');
-        const ipToCopy = 'play.jotunheim.ru';
+        const ipToCopy = 'mc.jotunheim.ru';
         
         function showCopyToast(message) {
             const oldToast = document.querySelector('.copy-toast');
@@ -1165,7 +1191,7 @@
             }
         }
 
-        // 3D объект
+        // 3D объект с оптимизированными текстурами (512x512 вместо 1024x1024)
         const objectContainer = document.getElementById('objectBtn');
         const canvas = document.getElementById('objectCanvas');
         
@@ -1189,14 +1215,15 @@
             
             const objectGroup = new THREE.Group();
             
+            // ОПТИМИЗАЦИЯ: текстуры 512x512 вместо 1024x1024
             const canvasMoon = document.createElement('canvas');
-            canvasMoon.width = 1024;
-            canvasMoon.height = 1024;
+            canvasMoon.width = 512;
+            canvasMoon.height = 512;
             const ctxMoon = canvasMoon.getContext('2d');
             ctxMoon.fillStyle = '#aaaaaa';
             ctxMoon.fillRect(0, 0, canvasMoon.width, canvasMoon.height);
-            for (let i = 0; i < 800; i++) {
-                const radius = Math.random() * 30 + 5;
+            for (let i = 0; i < 400; i++) {  // уменьшил кратеры с 800 до 400
+                const radius = Math.random() * 15 + 3;
                 const x = Math.random() * canvasMoon.width;
                 const y = Math.random() * canvasMoon.height;
                 const gray = 80 + Math.random() * 80;
@@ -1214,16 +1241,16 @@
             moonTexture.wrapT = THREE.RepeatWrapping;
             
             const canvasSun = document.createElement('canvas');
-            canvasSun.width = 1024;
-            canvasSun.height = 1024;
+            canvasSun.width = 512;
+            canvasSun.height = 512;
             const ctxSun = canvasSun.getContext('2d');
             ctxSun.fillStyle = '#ffaa33';
             ctxSun.fillRect(0, 0, canvasSun.width, canvasSun.height);
-            for (let i = 0; i < 2000; i++) {
+            for (let i = 0; i < 1000; i++) {  // уменьшил точки с 2000 до 1000
                 ctxSun.fillStyle = `rgba(255, ${100 + Math.random() * 100}, ${50 + Math.random() * 50}, ${0.4 + Math.random() * 0.5})`;
                 const x = Math.random() * canvasSun.width;
                 const y = Math.random() * canvasSun.height;
-                const r = Math.random() * 12 + 3;
+                const r = Math.random() * 8 + 2;
                 ctxSun.beginPath();
                 ctxSun.arc(x, y, r, 0, Math.PI * 2);
                 ctxSun.fill();
@@ -1250,7 +1277,7 @@
                 metalness: 0.2
             });
             
-            const sphereGeo = new THREE.SphereGeometry(0.9, 128, 128);
+            const sphereGeo = new THREE.SphereGeometry(0.9, 64, 64);  // уменьшил сегменты с 128 до 64
             const sphere = new THREE.Mesh(sphereGeo, moonMaterial);
             objectGroup.add(sphere);
             
@@ -1260,7 +1287,7 @@
                 opacity: 0.12,
                 side: THREE.BackSide
             });
-            const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.98, 64, 64), glowMat);
+            const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.98, 32, 32), glowMat);  // уменьшил сегменты
             objectGroup.add(glowSphere);
             
             scene.add(objectGroup);
@@ -1352,7 +1379,7 @@
             const explodeFlash = document.getElementById('explodeFlash');
             
             function createExplodeParticles(x, y) {
-                for (let i = 0; i < 80; i++) {
+                for (let i = 0; i < 60; i++) {  // уменьшил частицы с 80 до 60
                     const particle = document.createElement('div');
                     particle.style.position = 'fixed';
                     particle.style.width = (Math.random() * 6 + 2) + 'px';
@@ -1365,7 +1392,7 @@
                     particle.style.left = (x - 3) + 'px';
                     particle.style.top = (y - 3) + 'px';
                     const angle = Math.random() * Math.PI * 2;
-                    const dist = 60 + Math.random() * 180;
+                    const dist = 60 + Math.random() * 150;
                     const dx = Math.cos(angle) * dist;
                     const dy = Math.sin(angle) * dist;
                     particle.style.setProperty('--dx', dx + 'px');
