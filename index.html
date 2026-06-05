@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>JOTUNHEIM | ЛУНА И СОЛНЦЕ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Cinzel:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Убираем синий tap highlight на телефоне */
+        .nav-links a,
+        .btn,
+        .theme-toggle,
+        .menu-toggle,
+        .ip-display,
+        .mobile-ip-panel,
+        .object-container,
+        .badge,
+        .step {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0c1120 50%, #0a0f1c 100%);
+            font-family: 'Inter', sans-serif;
+            color: #e8edf5;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #111827; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #3a6a9a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5a8aba; }
+        
+        body.light-theme {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe8d4 50%, #ffddc4 100%);
+            color: #4a2a1a;
+        }
+        
+        body.light-theme ::-webkit-scrollbar-track { background: #f5e0c8; }
+        body.light-theme ::-webkit-scrollbar-thumb { background: #c49a6c; border-radius: 10px; }
+        body.light-theme ::-webkit-scrollbar-thumb:hover { background: #a87b4a; }
+        
+        body.light-theme .feature-card,
+        body.light-theme .leaderboard,
+        body.light-theme .step,
+        body.light-theme .testimonial,
+        body.light-theme .news-card,
+        body.light-theme .server-panel {
+            background: rgba(255, 250, 240, 0.96);
+            border-color: rgba(200, 160, 120, 0.3);
+            color: #4a2a1a;
+        }
+        
+        body.light-theme .section-title {
+            background: linear-gradient(135deg, #c49a6c, #e8b88a, #ffd8aa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        body.light-theme .section-subhead { color: #8a6a4a; }
+        body.light-theme .accent { color: #c49a6c; }
+        body.light-theme .btn-primary {
+            background: linear-gradient(135deg, #c49a6c, #a87b4a) !important;
+            color: #fff8ef !important;
+        }
+        body.light-theme .badge { 
+            background: rgba(200, 150, 100, 0.15) !important; 
+            border-color: rgba(200, 150, 100, 0.4) !important; 
+            color: #8b5a2b !important;
+        }
+        body.light-theme .badge i { color: #c49a6c !important; }
+        body.light-theme nav { background: rgba(255, 245, 235, 0.95); border-bottom-color: rgba(200, 150, 100, 0.3); }
+        body.light-theme .nav-links a { color: #6b4a3a; }
+        body.light-theme .nav-links a:hover { color: #c49a6c; }
+        body.light-theme .hero p { color: #6b4a3a; }
+        body.light-theme .hero::before { opacity: 0.08; }
+        body.light-theme .feature-icon { color: #c49a6c; }
+        body.light-theme .leaderboard-header { color: #c49a6c; background: rgba(200, 150, 100, 0.1); }
+        body.light-theme .testimonial { border-left-color: #c49a6c; background: rgba(255, 250, 240, 0.9); }
+        body.light-theme .testimonial .testimonial-text { color: #4a2a1a; }
+        body.light-theme .testimonial .testimonial-author { color: #8b5a2b; }
+        body.light-theme footer { background: #f5e0c8; color: #4a2a1a; }
+        body.light-theme .theme-toggle { color: #c49a6c; }
+        body.light-theme .server-panel > i { color: #c49a6c !important; }
+        body.light-theme .map-preview { background: linear-gradient(145deg, #f5e6d3, #ecd9b4); border-color: rgba(200, 150, 100, 0.4); }
+        body.light-theme .map-overlay { background: rgba(245, 230, 200, 0.95); }
+        body.light-theme .map-overlay i { color: #c49a6c !important; }
+        body.light-theme .map-overlay p { color: #4a2a1a !important; }
+        body.light-theme .discord-block { background: linear-gradient(145deg, #f5e6d3, #ecd9b4) !important; border: 1px solid rgba(200, 150, 100, 0.3); }
+        body.light-theme .discord-block h3 { color: #4a2a1a !important; }
+        body.light-theme .discord-block h3 i { color: #c49a6c !important; }
+        body.light-theme .discord-block p { color: #6b4a3a !important; }
+        body.light-theme .discord-block .btn-primary { background: #5865F2 !important; color: white !important; }
+        body.light-theme .ip-display { background: #f5e6d3; border-color: #c49a6c; }
+        body.light-theme .ip-display span { color: #8b5a2b; }
+        body.light-theme .hero-content .btn-primary { background: linear-gradient(135deg, #c49a6c, #a87b4a) !important; color: #fff8ef !important; }
+        body.light-theme .hero-content .btn-outline { border-color: #c49a6c; color: #c49a6c; background: rgba(255, 245, 235, 0.8); }
+        body.light-theme .server-panel { background: linear-gradient(135deg, #fff5e8, #fae8d4); border-color: rgba(200, 150, 100, 0.5); }
+        body.light-theme .server-panel h2 { color: #4a2a1a; }
+        body.light-theme .server-panel > p { color: #6b4a3a; }
+        body.light-theme .object-tooltip { background: #c49a6c; color: #fff8ef; border-color: #ffd700; }
+        body.light-theme .object-tooltip::after { background: #c49a6c; border-right-color: #ffd700; border-bottom-color: #ffd700; }
+        
+        .ip-display {
+            background: #05080f;
+            padding: 15px 30px;
+            border-radius: 80px;
+            display: inline-block;
+            border: 1px solid #5a8aba;
+            margin: 20px 0 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .ip-display:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(90,138,186,0.5);
+        }
+        
+        .ip-display span {
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: monospace;
+            color: #8acaff;
+        }
+        
+        .ip-display .ip-hint {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: #3a6a9a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            white-space: nowrap;
+            font-family: 'Cinzel', serif;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid #8acaff;
+            z-index: 100;
+        }
+        
+        .ip-display .ip-hint::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #3a6a9a;
+        }
+        
+        body.light-theme .ip-display .ip-hint {
+            background: #c49a6c;
+            border-color: #ffd700;
+        }
+        
+        body.light-theme .ip-display .ip-hint::after {
+            border-top-color: #c49a6c;
+        }
+        
+        .ip-display:hover .ip-hint {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        body.light-theme .ip-display {
+            background: #f5e6d3;
+            border-color: #c49a6c;
+        }
+        
+        body.light-theme .ip-display span {
+            color: #8b5a2b;
+        }
+
+        .mobile-ip-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #1e2a3a, #0f1422);
+            border-radius: 60px;
+            padding: 14px 28px;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            cursor: pointer;
+            border: 1px solid rgba(90,138,186,0.5);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+        
+        body.light-theme .mobile-ip-panel {
+            background: linear-gradient(135deg, #f5e6d3, #ecd9b4);
+            border-color: #c49a6c;
+        }
+        
+        .mobile-ip-panel i {
+            font-size: 1.5rem;
+            color: #8acaff;
+        }
+        
+        body.light-theme .mobile-ip-panel i {
+            color: #c49a6c;
+        }
+        
+        .mobile-ip-panel span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: monospace;
+            color: #8acaff;
+        }
+        
+        body.light-theme .mobile-ip-panel span {
+            color: #8b5a2b;
+        }
+        
+        .mobile-ip-panel .ip-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .mobile-ip-panel:active {
+            transform: translateX(-50%) scale(0.97);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-ip-panel {
+                display: flex;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-ip-panel {
+                display: none !important;
+            }
+        }
+
+        h1, h2, h3, .logo, .nav-links a, .btn, .step-number { font-family: 'Cinzel', serif; }
+
+        @keyframes shimmerText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .shimmer-text {
+            background: linear-gradient(90deg, #8acaff, #5a8aba, #3a6a9a, #5a8aba, #8acaff);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmerText 4s linear infinite;
+        }
+        body.light-theme .shimmer-text {
+            background: linear-gradient(90deg, #8b5a2b, #c49a6c, #e8c99e, #c49a6c, #8b5a2b);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmerText 4s linear infinite;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #5a8aba 0%, #8acaff 50%, #aad0ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        body.light-theme .section-title {
+            background: linear-gradient(135deg, #8b5a2b, #c49a6c, #e8c99e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .section-subhead {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            max-width: 620px;
+            margin-bottom: 64px;
+        }
+        .accent { color: #8acaff; }
+        body.light-theme .accent { color: #c49a6c; }
+
+        .snowflakes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .snowflake {
+            position: absolute;
+            background: #8acaff;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: fallSnow linear infinite;
+            box-shadow: 0 0 5px rgba(138,202,255,0.5);
+        }
+        body.light-theme .snowflake {
+            background: #ffd700;
+            box-shadow: 0 0 5px rgba(255,215,0,0.5);
+        }
+        @keyframes fallSnow {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .object-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+        
+        .object-container:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(90,138,186,0.8));
+        }
+        
+        .object-container:active {
+            transform: scale(0.95);
+        }
+        
+        .object-container canvas {
+            display: block;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+        }
+        
+        .object-tooltip {
+            position: fixed;
+            bottom: 145px;
+            right: 30px;
+            background: #3a6a9a;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            font-family: 'Cinzel', serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #8acaff;
+        }
+        .object-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: #3a6a9a;
+            transform: rotate(45deg);
+            border-right: 1px solid #8acaff;
+            border-bottom: 1px solid #8acaff;
+        }
+
+        .section {
+            padding: 100px 6%;
+            max-width: 1440px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 38px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3a6a9a, #1a4a7a);
+            color: white;
+            box-shadow: 0 5px 20px rgba(58,106,154,0.35);
+        }
+        .btn-primary:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 0 20px rgba(138,202,255,0.6);
+        }
+        .btn-outline {
+            border: 1.5px solid rgba(138,202,255,0.6);
+            color: #aac9ff;
+            background: rgba(10,14,26,0.6);
+            backdrop-filter: blur(5px);
+        }
+        .btn-outline:hover {
+            background: rgba(58,106,154,0.25);
+            transform: scale(1.05) translateY(-2px);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #8acaff, #5a8aba, #3a6a9a, #5a8aba, #8acaff);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmerText 4s linear infinite;
+        }
+        body.light-theme .logo {
+            background: linear-gradient(90deg, #8b5a2b, #c49a6c, #e8c99e, #c49a6c, #8b5a2b);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmerText 4s linear infinite;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            backdrop-filter: blur(16px);
+            background: rgba(10,14,26,0.85);
+            z-index: 1000;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(90,138,186,0.3);
+        }
+        body.light-theme nav {
+            background: rgba(255, 245, 235, 0.95);
+        }
+        .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #c8e0ff;
+            transition: 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #5a8aba, #3a6a9a);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: #8acaff; }
+        .menu-toggle { display: none; font-size: 1.6rem; cursor: pointer; color: #5a8aba; }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            margin-left: 20px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            color: #5a8aba;
+        }
+        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); }
+
+        .hero {
+            min-height: 95vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.pexels.com/photos/1291798/pexels-photo-1291798.jpeg?auto=compress&cs=tinysrgb&w=1600');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            filter: blur(3px);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 720px;
+            margin: 0 6%;
+            animation: fadeInUp 1s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero h1 { 
+            font-size: 4.5rem; 
+            margin-bottom: 24px; 
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+            color: #ffffff;
+        }
+        .hero h1 .accent {
+            background: linear-gradient(135deg, #8acaff, #5a8aba, #3a6a9a);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmerText 4s linear infinite;
+        }
+        body.light-theme .hero h1 { 
+            text-shadow: 0 0 30px rgba(0,0,0,0.2);
+            color: #2a1a0a;
+        }
+        body.light-theme .hero h1 .accent {
+            background: linear-gradient(135deg, #c49a6c, #a87b4a, #8b5a2b);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmerText 4s linear infinite;
+        }
+        .hero p { font-size: 1.2rem; color: #cbd5e6; margin-bottom: 40px; }
+        body.light-theme .hero p { color: #4a3727; }
+
+        .leaderboard {
+            background: linear-gradient(145deg, #111827, #0f1422);
+            border-radius: 28px;
+            padding: 10px;
+            border: 1px solid rgba(90,138,186,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .leaderboard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -15px rgba(0,0,0,0.5);
+        }
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 70px 1fr 120px 100px;
+            background: rgba(90,138,186,0.15);
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #8acaff;
+        }
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 70px 1fr 120px 100px;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(90,138,186,0.1);
+            transition: all 0.3s;
+            align-items: center;
+        }
+        .leaderboard-row:hover { background: rgba(90,138,186,0.1); transform: translateX(5px); }
+        .rank-1 { color: #ffd700; font-weight: bold; }
+        .rank-2 { color: #c0c0c0; font-weight: bold; }
+        .rank-3 { color: #cd7f32; font-weight: bold; }
+
+        .map-preview {
+            background: linear-gradient(145deg, #111827, #0f1422);
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid rgba(90,138,186,0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .map-preview:hover { transform: scale(1.02); box-shadow: 0 20px 30px -15px rgba(0,0,0,0.5); }
+        .map-overlay { padding: 20px; background: rgba(10,14,26,0.9); }
+
+        .feature-card {
+            background: linear-gradient(145deg, #111827, #0f1422);
+            padding: 34px 28px;
+            border-radius: 28px;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(90,138,186,0.2);
+            transform-style: preserve-3d;
+        }
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(90,138,186,0.6);
+            box-shadow: 0 25px 40px -15px rgba(0,0,0,0.5);
+        }
+        .feature-icon {
+            font-size: 2.6rem;
+            color: #6a9aca;
+            margin-bottom: 22px;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover .feature-icon { transform: scale(1.1) rotate(5deg); }
+
+        /* ===== ЦИФРЫ 01 02 03 ===== */
+        .step {
+            background: linear-gradient(145deg, #111827, #0f1422);
+            padding: 36px 28px;
+            border-radius: 32px;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(90,138,186,0.2);
+            text-align: center;
+            flex: 1;
+            backdrop-filter: blur(8px);
+        }
+        .step:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: rgba(90,138,186,0.6);
+            box-shadow: 0 25px 40px -15px rgba(0,0,0,0.5);
+        }
+        .step-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #cccccc;                         /* не такой светлый (приглушённый) */
+            margin-bottom: 20px;
+            text-shadow: 0 0 6px rgba(90, 138, 186, 0.3);  /* слабое свечение */
+            transition: transform 0.3s;
+        }
+        .step:hover .step-number { transform: scale(1.1); }
+        
+        /* Светлая тема для цифр 01 02 03 — без синего */
+        body.light-theme .step-number {
+            color: #8b5a2b;                         /* золотисто-коричневый */
+            text-shadow: none;                       /* убрал синее свечение полностью */
+        }
+
+        .testimonial {
+            background: linear-gradient(125deg, #101624, #0b0f19);
+            border-radius: 28px;
+            padding: 32px;
+            border-left: 4px solid #5a8aba;
+            transition: all 0.3s;
+        }
+        .testimonial:hover { transform: translateX(8px) scale(1.01); box-shadow: -5px 5px 20px rgba(0,0,0,0.4); }
+
+        .news-card {
+            background: #0f1522;
+            border-radius: 28px;
+            padding: 30px;
+            transition: all 0.3s;
+            border-bottom: 3px solid #1e2a3a;
+        }
+        .news-card:hover { border-bottom-color: #5a8aba; transform: translateY(-6px); box-shadow: 0 15px 30px -15px rgba(0,0,0,0.4); }
+
+        .server-panel {
+            background: linear-gradient(135deg, #101624, #0a0e1c);
+            border-radius: 56px;
+            padding: 56px 48px;
+            text-align: center;
+            border: 1px solid rgba(90,138,186,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .server-panel:hover { transform: scale(1.01); }
+        .server-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(90,138,186,0.1), transparent);
+            animation: rotateGlow 20s linear infinite;
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .badge {
+            background: rgba(90,138,186,0.15);
+            padding: 7px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(90,138,186,0.3);
+            transition: all 0.2s;
+        }
+        .badge:hover { background: rgba(90,138,186,0.3); transform: scale(1.05); }
+
+        footer {
+            background: #060914;
+            padding: 48px 6% 32px;
+            text-align: center;
+            border-top: 1px solid rgba(90,138,186,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        footer .logo {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+        footer p {
+            margin: 0;
+            line-height: 1.5;
+            color: #9ca3af;
+        }
+        body.light-theme footer p {
+            color: #6b4a3a;
+        }
+        footer p:last-of-type {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .grid-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .steps-wrapper { display: flex; gap: 30px; flex-wrap: wrap; }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #3a6a9a;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: bold;
+            z-index: 10000;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            text-align: center;
+            white-space: nowrap;
+            transition: transform 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 1px solid #8acaff;
+        }
+        .copy-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        body.light-theme .copy-toast {
+            background: #c49a6c;
+            color: #fff8ef;
+            border-color: #a87b4a;
+        }
+
+        .discord-block {
+            border-radius: 60px;
+            padding: 48px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            background: linear-gradient(145deg, #0f1628, #0a0e1c);
+            transition: transform 0.3s;
+        }
+        .discord-block:hover { transform: scale(1.01); }
+
+        @keyframes particleFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+        }
+        @keyframes explodeFlashAnim {
+            0% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+        .explode-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+        }
+        .explode-flash.active {
+            opacity: 0.9;
+            animation: explodeFlashAnim 0.4s ease-out forwards;
+        }
+
+        @media (max-width: 900px) {
+            .grid-3col, .testimonial-grid { grid-template-columns: 1fr; }
+            .steps-wrapper { flex-direction: column; }
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: #0a0e1a;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                padding: 24px;
+                gap: 20px;
+            }
+            body.light-theme .nav-links { background: #f5e6d3; }
+            .nav-links.active { display: flex; }
+            .menu-toggle { display: block; }
+            .ip-display span { font-size: 1rem; }
+            .leaderboard-header, .leaderboard-row {
+                grid-template-columns: 50px 1fr 80px 70px;
+                font-size: 0.8rem;
+            }
+            .copy-toast { white-space: normal; max-width: 90%; font-size: 0.9rem; padding: 12px 20px; }
+            .discord-block { padding: 32px 24px; text-align: center; justify-content: center; }
+            footer { padding: 32px 20px 24px; gap: 12px; }
+            footer .logo { font-size: 1.2rem; }
+            footer p { font-size: 0.8rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .object-container {
+                display: none !important;
+            }
+            .object-tooltip {
+                display: none !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-ip-panel {
+                padding: 12px 20px;
+                bottom: 20px;
+            }
+            .mobile-ip-panel span {
+                font-size: 0.9rem;
+            }
+            .mobile-ip-panel i {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="snowflakes" id="snowflakes"></div>
+    <div class="explode-flash" id="explodeFlash"></div>
+
+    <div class="object-tooltip" id="objectTooltip">🌙 НАЖМИ НА ЛУНУ 🌙</div>
+
+    <div class="object-container" id="objectBtn">
+        <canvas id="objectCanvas" width="100" height="100" style="width:100%; height:100%; display:block;"></canvas>
+    </div>
+
+    <div class="mobile-ip-panel" id="mobileIpPanel">
+        <i class="fas fa-copy"></i>
+        <span>play.jotunheim.ru</span>
+        <span class="ip-label">нажми для копирования</span>
+    </div>
+
+    <nav>
+        <div class="logo">🌙 JOTUNHEIM</div>
+        <div class="menu-toggle" id="mobileMenuBtn"><i class="fas fa-bars"></i></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#why">О сервере</a></li>
+            <li><a href="#howto">Как начать</a></li>
+            <li><a href="#leaderboard">Топ игроков</a></li>
+            <li><a href="#map">Карта</a></li>
+            <li><a href="#connect">Подключение</a></li>
+            <li><button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Добро пожаловать в <span class="accent">JOTUNHEIM</span></h1>
+            <p>Честный ванильный Minecraft сервер. Никакого доната и привилегий — только чистое выживание, строительство и дружное комьюнити.</p>
+            <div style="display: flex; gap: 18px; flex-wrap: wrap;">
+                <a href="#connect" class="btn btn-primary"><i class="fas fa-moon"></i> Присоединиться</a>
+                <a href="#discord-section" class="btn btn-outline"><i class="fab fa-discord"></i> Discord</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="why" class="section" data-aos="fade-up">
+        <h2 class="section-title">Почему JOTUNHEIM?</h2>
+        <div class="section-subhead">Мы создали пространство для тех, кто ценит настоящий Minecraft без лишнего.</div>
+        <div class="grid-3col">
+            <div class="feature-card" data-aos="flip-left" data-aos-delay="100">
+                <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                <h3>Полная ваниль</h3>
+                <p>Никаких приватов, телепортов и магазинов. Играй честно и свободно.</p>
+            </div>
+            <div class="feature-card" data-aos="flip-left" data-aos-delay="200">
+                <div class="feature-icon"><i class="fas fa-handshake"></i></div>
+                <h3>Дружное комьюнити</h3>
+                <p>Адекватные люди, готовые помогать новичкам и вместе строить большие проекты.</p>
+            </div>
+            <div class="feature-card" data-aos="flip-left" data-aos-delay="300">
+                <div class="feature-icon"><i class="fas fa-infinity"></i></div>
+                <h3>Мир не вайпается</h3>
+                <p>Твои постройки останутся навсегда. Регулярные бэкапы и забота о сохранности.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="leaderboard" class="section" data-aos="fade-up">
+        <h2 class="section-title">🏆 Топ игроков</h2>
+        <div class="section-subhead">Самые активные строители и шахтёры JOTUNHEIM</div>
+        <div class="leaderboard" data-aos="zoom-in">
+            <div class="leaderboard-header"><span>#</span><span>Игрок</span><span>Время в игре</span><span>Постройки</span></div>
+            <div class="leaderboard-row"><span class="rank-1">👑 1</span><span><i class="fas fa-star" style="color:#ffd700;"></i> Alex_Builder</span><span>1247 часов</span><span>156</span></div>
+            <div class="leaderboard-row"><span class="rank-2">🥈 2</span><span><i class="fas fa-pickaxe"></i> RedstoneWizard</span><span>982 часа</span><span>89</span></div>
+            <div class="leaderboard-row"><span class="rank-3">🥉 3</span><span><i class="fas fa-tree"></i> CraftyMiner</span><span>756 часов</span><span>67</span></div>
+            <div class="leaderboard-row"><span>4</span><span><i class="fas fa-ship"></i> MegaBuild</span><span>623 часа</span><span>54</span></div>
+            <div class="leaderboard-row"><span>5</span><span><i class="fas fa-mountain"></i> DeepDigger</span><span>541 час</span><span>42</span></div>
+            <div class="leaderboard-row"><span>6</span><span><i class="fas fa-hammer"></i> StoneMaster</span><span>489 часов</span><span>38</span></div>
+            <div class="leaderboard-row"><span>7</span><span><i class="fas fa-farm"></i> FarmerJoe</span><span>412 часов</span><span>31</span></div>
+            <div class="leaderboard-row"><span>8</span><span><i class="fas fa-dragon"></i> EnderKnight</span><span>378 часов</span><span>28</span></div>
+            <div class="leaderboard-row"><span>9</span><span><i class="fas fa-gem"></i> CrystalMiner</span><span>312 часов</span><span>23</span></div>
+            <div class="leaderboard-row"><span>10</span><span><i class="fas fa-bed"></i> NightOwl</span><span>289 часов</span><span>19</span></div>
+        </div>
+    </section>
+
+    <section id="map" class="section" data-aos="fade-up">
+        <h2 class="section-title">🗺️ Карта мира</h2>
+        <div class="section-subhead">Исследуй территории JOTUNHEIM в реальном времени</div>
+        <div class="map-preview" id="mapLink" data-aos="zoom-in">
+            <img src="https://via.placeholder.com/1200x500/1a2333/5a8aba?text=JOTUNHEIM+MAP" alt="Карта сервера">
+            <div class="map-overlay">
+                <i class="fas fa-map-marked-alt" style="font-size: 1.5rem; color: #5a8aba;"></i>
+                <p style="margin-top: 10px;">Интерактивная карта мира</p>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Нажмите для открытия</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="howto" class="section" data-aos="fade-up">
+        <div class="steps-wrapper">
+            <div class="step" data-aos="zoom-in" data-aos-delay="100">
+                <div class="step-number">01</div>
+                <h3>Нажми на луну/солнце</h3>
+                <p>Кликни по вращающемуся объекту в правом нижнем углу</p>
+            </div>
+            <div class="step" data-aos="zoom-in" data-aos-delay="200">
+                <div class="step-number">02</div>
+                <h3>IP скопируется</h3>
+                <p>Адрес сервера автоматически скопируется в буфер обмена</p>
+            </div>
+            <div class="step" data-aos="zoom-in" data-aos-delay="300">
+                <div class="step-number">03</div>
+                <h3>Вставь и играй</h3>
+                <p>Ctrl+V в Minecraft и наслаждайся игрой!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="community" class="section" data-aos="fade-up">
+        <h2 class="section-title">Что говорят игроки</h2>
+        <div class="section-subhead">Реальные отзывы из нашего комьюнити</div>
+        <div class="testimonial-grid">
+            <div class="testimonial" data-aos="fade-right">
+                <div class="testimonial-text">«Лучший ванильный сервер! Админы адекватные, люди дружелюбные. Остался навсегда!»</div>
+                <div class="testimonial-author">— Alex_Builder</div>
+            </div>
+            <div class="testimonial" data-aos="fade-left">
+                <div class="testimonial-text">«Наконец-то место без доната и приватов. Все строят города, никто не гриферит!»</div>
+                <div class="testimonial-author">— RedstoneWizard</div>
+            </div>
+            <div class="testimonial" data-aos="fade-right" data-aos-delay="100">
+                <div class="testimonial-text">«Отличный сервер для выживания по-честному. Комьюнити помогает новичкам. 10/10»</div>
+                <div class="testimonial-author">— CraftyMiner</div>
+            </div>
+            <div class="testimonial" data-aos="fade-left" data-aos-delay="100">
+                <div class="testimonial-text">«Уже несколько месяцев здесь. Стабильный онлайн, отзывчивая администрация. Рекомендую!»</div>
+                <div class="testimonial-author">— MegaBuild</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="news" class="section" data-aos="fade-up">
+        <h2 class="section-title">Новости сервера</h2>
+        <div class="section-subhead">Что нового происходит в мире JOTUNHEIM</div>
+        <div class="grid-3col">
+            <div class="news-card" data-aos="flip-up">
+                <div class="news-date"><i class="far fa-calendar-alt"></i> 14 июня 2025</div>
+                <h3>Расширение границ мира</h3>
+                <p>Открыты новые территории для застройки. Спешите занять лучшие места!</p>
+            </div>
+            <div class="news-card" data-aos="flip-up" data-aos-delay="100">
+                <div class="news-date"><i class="fas fa-trophy"></i> 7 июня 2025</div>
+                <h3>Конкурс на лучшую постройку</h3>
+                <p>Победитель получит эксклюзивный титул и ценные призы.</p>
+            </div>
+            <div class="news-card" data-aos="flip-up" data-aos-delay="200">
+                <div class="news-date"><i class="fas fa-server"></i> 1 июня 2025</div>
+                <h3>Обновление до 1.21.1</h3>
+                <p>Сервер полностью совместим с последней версией Minecraft.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="connect" class="section" data-aos="zoom-in">
+        <div class="server-panel">
+            <i class="fas fa-moon" style="font-size: 2.8rem;"></i>
+            <h2 style="font-size: 2rem; margin: 18px 0;">Подключиться к JOTUNHEIM</h2>
+            <p style="max-width: 500px; margin: 0 auto;">Версии Minecraft: 1.20.4 — 1.21.1 | Java Edition</p>
+            
+            <div class="ip-display" id="ipDisplay">
+                <span>play.jotunheim.ru</span>
+                <div class="ip-hint" id="ipHint">🌙 Нажми на луну/солнце 🌙</div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 10px;">
+                <span class="badge"><i class="fas fa-moon"></i> Луна/Солнце</span>
+                <span class="badge"><i class="fas fa-shield-alt"></i> Анти-грифер</span>
+                <span class="badge"><i class="fas fa-clock"></i> 24/7</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="discord-section" class="section" style="padding-top: 0;" data-aos="fade-up">
+        <div class="discord-block">
+            <div>
+                <h3 style="font-size: 1.8rem;"><i class="fab fa-discord"></i> Наш Discord</h3>
+                <p>Присоединяйся к обсуждениям, находи друзей по игре и следи за анонсами.</p>
+            </div>
+            <a href="#" id="discordJoinBtn" class="btn btn-primary" style="background: #5865F2; color: white; gap: 12px;"><i class="fab fa-discord"></i> Вступить</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo">🌙 JOTUNHEIM</div>
+        <p>Честный ванильный Minecraft сервер. Присоединяйся к нашему комьюнити!</p>
+        <p>© 2025 JOTUNHEIM Project | Луна и Солнце</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: false, mirror: true, offset: 50 });
+
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes');
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const flake = document.createElement('div');
+                flake.classList.add('snowflake');
+                const size = Math.random() * 6 + 2;
+                flake.style.width = size + 'px';
+                flake.style.height = size + 'px';
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.animationDelay = Math.random() * 15 + 's';
+                flake.style.animationDuration = Math.random() * 5 + 3 + 's';
+                flake.style.opacity = Math.random() * 0.6 + 0.2;
+                flake.style.background = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+                container.appendChild(flake);
+            }
+        }
+        createSnowflakes();
+
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const navUl = document.getElementById('navLinks');
+        if (mobileBtn) {
+            mobileBtn.addEventListener('click', () => { navUl.classList.toggle('active'); });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === "#") return;
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    if (navUl.classList.contains('active')) navUl.classList.remove('active');
+                }
+            });
+        });
+
+        const mobileIpPanel = document.getElementById('mobileIpPanel');
+        const ipToCopy = 'play.jotunheim.ru';
+        
+        function showCopyToast(message) {
+            const oldToast = document.querySelector('.copy-toast');
+            if (oldToast) oldToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'copy-toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+        
+        async function copyIp() {
+            try {
+                await navigator.clipboard.writeText(ipToCopy);
+                showCopyToast('✅ IP скопирован: ' + ipToCopy);
+                return true;
+            } catch (err) {
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = ipToCopy;
+                    textarea.style.position = 'fixed';
+                    textarea.style.top = '-9999px';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const success = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    if (success) {
+                        showCopyToast('✅ IP скопирован: ' + ipToCopy);
+                    } else {
+                        showCopyToast('❌ Скопируй вручную: ' + ipToCopy);
+                    }
+                    return success;
+                } catch (fallbackErr) {
+                    showCopyToast('❌ Скопируй вручную: ' + ipToCopy);
+                    return false;
+                }
+            }
+        }
+        
+        if (mobileIpPanel) {
+            mobileIpPanel.addEventListener('click', async function(e) {
+                e.preventDefault();
+                mobileIpPanel.style.transform = 'translateX(-50%) scale(0.97)';
+                setTimeout(() => { if(mobileIpPanel) mobileIpPanel.style.transform = 'translateX(-50%)'; }, 200);
+                await copyIp();
+            });
+        }
+
+        function updateIpHintText() {
+            const ipHint = document.getElementById('ipHint');
+            if (ipHint) {
+                const isLight = document.body.classList.contains('light-theme');
+                ipHint.innerHTML = isLight ? '☀️ Нажми на солнце ☀️' : '🌙 Нажми на луну 🌙';
+            }
+        }
+
+        // 3D объект
+        const objectContainer = document.getElementById('objectBtn');
+        const canvas = document.getElementById('objectCanvas');
+        
+        if (canvas && objectContainer) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+            camera.position.set(0, 0, 3);
+            
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            
+            function updateRendererSize() {
+                const width = objectContainer.clientWidth;
+                const height = objectContainer.clientHeight;
+                if (width > 0 && height > 0) {
+                    renderer.setSize(width, height);
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                }
+            }
+            updateRendererSize();
+            
+            const objectGroup = new THREE.Group();
+            
+            const canvasMoon = document.createElement('canvas');
+            canvasMoon.width = 1024;
+            canvasMoon.height = 1024;
+            const ctxMoon = canvasMoon.getContext('2d');
+            ctxMoon.fillStyle = '#aaaaaa';
+            ctxMoon.fillRect(0, 0, canvasMoon.width, canvasMoon.height);
+            for (let i = 0; i < 800; i++) {
+                const radius = Math.random() * 30 + 5;
+                const x = Math.random() * canvasMoon.width;
+                const y = Math.random() * canvasMoon.height;
+                const gray = 80 + Math.random() * 80;
+                ctxMoon.beginPath();
+                ctxMoon.arc(x, y, radius, 0, Math.PI * 2);
+                ctxMoon.fillStyle = `rgb(${gray}, ${gray}, ${gray})`;
+                ctxMoon.fill();
+                ctxMoon.beginPath();
+                ctxMoon.arc(x - radius * 0.2, y - radius * 0.2, radius * 0.3, 0, Math.PI * 2);
+                ctxMoon.fillStyle = `rgb(${gray + 30}, ${gray + 30}, ${gray + 30})`;
+                ctxMoon.fill();
+            }
+            const moonTexture = new THREE.CanvasTexture(canvasMoon);
+            moonTexture.wrapS = THREE.RepeatWrapping;
+            moonTexture.wrapT = THREE.RepeatWrapping;
+            
+            const canvasSun = document.createElement('canvas');
+            canvasSun.width = 1024;
+            canvasSun.height = 1024;
+            const ctxSun = canvasSun.getContext('2d');
+            ctxSun.fillStyle = '#ffaa33';
+            ctxSun.fillRect(0, 0, canvasSun.width, canvasSun.height);
+            for (let i = 0; i < 2000; i++) {
+                ctxSun.fillStyle = `rgba(255, ${100 + Math.random() * 100}, ${50 + Math.random() * 50}, ${0.4 + Math.random() * 0.5})`;
+                const x = Math.random() * canvasSun.width;
+                const y = Math.random() * canvasSun.height;
+                const r = Math.random() * 12 + 3;
+                ctxSun.beginPath();
+                ctxSun.arc(x, y, r, 0, Math.PI * 2);
+                ctxSun.fill();
+            }
+            const sunTexture = new THREE.CanvasTexture(canvasSun);
+            sunTexture.wrapS = THREE.RepeatWrapping;
+            sunTexture.wrapT = THREE.RepeatWrapping;
+            
+            const moonMaterial = new THREE.MeshStandardMaterial({
+                map: moonTexture,
+                color: 0xcccccc,
+                emissive: 0x222222,
+                emissiveIntensity: 0.08,
+                roughness: 0.9,
+                metalness: 0.05
+            });
+            
+            const sunMaterial = new THREE.MeshStandardMaterial({
+                map: sunTexture,
+                color: 0xffaa66,
+                emissive: 0xff4422,
+                emissiveIntensity: 0.5,
+                roughness: 0.3,
+                metalness: 0.2
+            });
+            
+            const sphereGeo = new THREE.SphereGeometry(0.9, 128, 128);
+            const sphere = new THREE.Mesh(sphereGeo, moonMaterial);
+            objectGroup.add(sphere);
+            
+            const glowMat = new THREE.MeshPhongMaterial({
+                color: 0x88aaff,
+                transparent: true,
+                opacity: 0.12,
+                side: THREE.BackSide
+            });
+            const glowSphere = new THREE.Mesh(new THREE.SphereGeometry(0.98, 64, 64), glowMat);
+            objectGroup.add(glowSphere);
+            
+            scene.add(objectGroup);
+            
+            const ambientLight = new THREE.AmbientLight(0x333344);
+            scene.add(ambientLight);
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            mainLight.position.set(2, 3, 2);
+            scene.add(mainLight);
+            const backLight = new THREE.PointLight(0x88aaff, 0.6);
+            backLight.position.set(0, 0, -2);
+            scene.add(backLight);
+            const fillLight = new THREE.PointLight(0xffaa88, 0.4);
+            fillLight.position.set(1, 1, 1);
+            scene.add(fillLight);
+            
+            let time = 0;
+            let explodeTime3D = 0;
+            let isExploding3D = false;
+            
+            function animateObject() {
+                requestAnimationFrame(animateObject);
+                
+                if (objectContainer.style.display !== 'none') {
+                    if (!isExploding3D) {
+                        objectGroup.rotation.y += 0.005;
+                        objectGroup.rotation.x += 0.003;
+                        
+                        time += 0.02;
+                        const scale = 1 + Math.sin(time * 2) * 0.008;
+                        sphere.scale.set(scale, scale, scale);
+                        glowSphere.scale.set(scale, scale, scale);
+                        
+                        const isLight = document.body.classList.contains('light-theme');
+                        if (isLight) {
+                            glowMat.color.setHex(0xff8844);
+                            glowMat.opacity = 0.2 + Math.sin(time * 4) * 0.05;
+                        } else {
+                            glowMat.color.setHex(0x88aaff);
+                            glowMat.opacity = 0.12 + Math.sin(time * 4) * 0.04;
+                        }
+                    } else {
+                        explodeTime3D += 0.08;
+                        const explosionScale = 1 + explodeTime3D * 0.2;
+                        objectGroup.scale.set(explosionScale, explosionScale, explosionScale);
+                        if (explodeTime3D > 8) {
+                            isExploding3D = false;
+                            explodeTime3D = 0;
+                            objectGroup.scale.set(1, 1, 1);
+                        }
+                    }
+                    
+                    const isLight = document.body.classList.contains('light-theme');
+                    if (isLight) {
+                        sphere.material = sunMaterial;
+                        if (sunTexture) sunTexture.needsUpdate = true;
+                        mainLight.intensity = 1.5;
+                        backLight.intensity = 0.8;
+                        fillLight.intensity = 0.6;
+                    } else {
+                        sphere.material = moonMaterial;
+                        if (moonTexture) moonTexture.needsUpdate = true;
+                        mainLight.intensity = 1.0;
+                        backLight.intensity = 0.5;
+                        fillLight.intensity = 0.3;
+                    }
+                    
+                    renderer.render(scene, camera);
+                }
+            }
+            animateObject();
+            
+            window.addEventListener('resize', () => {
+                if (objectContainer.style.display !== 'none') {
+                    updateRendererSize();
+                }
+            });
+            
+            const objectTooltip = document.getElementById('objectTooltip');
+            if (objectContainer && objectTooltip) {
+                objectContainer.addEventListener('mouseenter', () => {
+                    objectTooltip.style.opacity = '1';
+                });
+                objectContainer.addEventListener('mouseleave', () => {
+                    objectTooltip.style.opacity = '0';
+                });
+            }
+            
+            const explodeFlash = document.getElementById('explodeFlash');
+            
+            function createExplodeParticles(x, y) {
+                for (let i = 0; i < 80; i++) {
+                    const particle = document.createElement('div');
+                    particle.style.position = 'fixed';
+                    particle.style.width = (Math.random() * 6 + 2) + 'px';
+                    particle.style.height = particle.style.width;
+                    const isLight = document.body.classList.contains('light-theme');
+                    particle.style.backgroundColor = isLight ? `hsl(${40 + Math.random() * 30}, 100%, 60%)` : `hsl(${200 + Math.random() * 40}, 80%, 65%)`;
+                    particle.style.borderRadius = '50%';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.zIndex = '10000';
+                    particle.style.left = (x - 3) + 'px';
+                    particle.style.top = (y - 3) + 'px';
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 60 + Math.random() * 180;
+                    const dx = Math.cos(angle) * dist;
+                    const dy = Math.sin(angle) * dist;
+                    particle.style.setProperty('--dx', dx + 'px');
+                    particle.style.setProperty('--dy', dy + 'px');
+                    particle.style.animation = 'particleFly 0.8s ease-out forwards';
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 800);
+                }
+            }
+            
+            function playObjectSound() {
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.frequency.value = 440;
+                    gain.gain.value = 0.2;
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.4);
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } catch(e) {}
+            }
+            
+            function shakeScreen() {
+                const originalX = window.scrollX;
+                const originalY = window.scrollY;
+                let shakes = 0;
+                const interval = setInterval(() => {
+                    window.scrollTo(originalX + (Math.random() - 0.5) * 10, originalY + (Math.random() - 0.5) * 8);
+                    shakes++;
+                    if (shakes > 10) {
+                        clearInterval(interval);
+                        window.scrollTo(originalX, originalY);
+                    }
+                }, 25);
+            }
+            
+            let isOpening = false;
+            
+            async function activateObject() {
+                if (isOpening) return;
+                isOpening = true;
+                const rect = objectContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                isExploding3D = true;
+                explodeTime3D = 0;
+                if (explodeFlash) {
+                    explodeFlash.classList.add('active');
+                    setTimeout(() => explodeFlash.classList.remove('active'), 400);
+                }
+                shakeScreen();
+                playObjectSound();
+                createExplodeParticles(centerX, centerY);
+                await copyIp();
+                setTimeout(() => {
+                    isExploding3D = false;
+                    isOpening = false;
+                }, 800);
+            }
+            
+            if (objectContainer) {
+                objectContainer.addEventListener('click', activateObject);
+            }
+        }
+        
+        const discordJoin = document.getElementById('discordJoinBtn');
+        if (discordJoin) {
+            discordJoin.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open('https://discord.gg/uzAvmYYn', '_blank');
+            });
+        }
+        
+        const mapLink = document.getElementById('mapLink');
+        if (mapLink) {
+            mapLink.addEventListener('click', () => {
+                alert('Интерактивная карта скоро откроется!');
+            });
+        }
+        
+        const themeToggle = document.getElementById('themeToggle');
+        let isDark = true;
+        
+        function setTheme(isDarkTheme) {
+            if (isDarkTheme) {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                if(themeToggle) themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                const tooltip = document.getElementById('objectTooltip');
+                if(tooltip) tooltip.innerHTML = '🌙 НАЖМИ НА ЛУНУ 🌙';
+                const logo = document.querySelector('.logo');
+                if(logo) logo.innerHTML = '🌙 JOTUNHEIM';
+                const heroIcon = document.querySelector('.hero-content .btn-primary i');
+                if(heroIcon) heroIcon.className = 'fas fa-moon';
+                const panelIcon = document.querySelector('.server-panel > i');
+                if(panelIcon) panelIcon.className = 'fas fa-moon';
+                const mobileIcon = document.querySelector('.mobile-ip-panel i');
+                if(mobileIcon) mobileIcon.className = 'fas fa-moon';
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                if(themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                const tooltip = document.getElementById('objectTooltip');
+                if(tooltip) tooltip.innerHTML = '☀️ НАЖМИ НА СОЛНЦЕ ☀️';
+                const logo = document.querySelector('.logo');
+                if(logo) logo.innerHTML = '☀️ JOTUNHEIM';
+                const heroIcon = document.querySelector('.hero-content .btn-primary i');
+                if(heroIcon) heroIcon.className = 'fas fa-sun';
+                const panelIcon = document.querySelector('.server-panel > i');
+                if(panelIcon) panelIcon.className = 'fas fa-sun';
+                const mobileIcon = document.querySelector('.mobile-ip-panel i');
+                if(mobileIcon) mobileIcon.className = 'fas fa-sun';
+            }
+            isDark = isDarkTheme;
+            updateIpHintText();
+        }
+        
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                setTheme(!isDark);
+            });
+        }
+        
+        updateIpHintText();
+        
+        setTimeout(() => {
+            const tooltip = document.getElementById('objectTooltip');
+            if (tooltip && window.innerWidth > 768) {
+                tooltip.style.opacity = '1';
+                setTimeout(() => {
+                    if (tooltip) tooltip.style.opacity = '0';
+                }, 4000);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
