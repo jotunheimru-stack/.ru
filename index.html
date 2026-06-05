@@ -32,26 +32,7 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
         
-        /* Фон Minecraft (без снежинок) */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.25;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        body.light-theme::before {
-            background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/6a/Day_Minecraft_background.jpeg/revision/latest?cb=20220202204420');
-            opacity: 0.2;
-        }
+        /* Убираем картинку - просто градиент */
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #111827; border-radius: 10px; }
@@ -329,7 +310,7 @@
         .accent { color: #8acaff; }
         body.light-theme .accent { color: #c49a6c; }
 
-        /* Убираем старые снежинки */
+        /* Убираем снежинки */
         .snowflakes {
             display: none;
         }
@@ -886,8 +867,6 @@
 </head>
 <body>
 
-    <!-- Снежинки удалены -->
-    
     <div class="explode-flash" id="explodeFlash"></div>
 
     <div class="object-tooltip" id="objectTooltip">🌙 НАЖМИ НА ЛУНУ 🌙</div>
@@ -1084,8 +1063,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         AOS.init({ duration: 800, once: false, mirror: true, offset: 50 });
-
-        // Функция снежинок удалена
 
         const mobileBtn = document.getElementById('mobileMenuBtn');
         const navUl = document.getElementById('navLinks');
