@@ -32,8 +32,6 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
         
-        /* Убираем картинку - просто градиент */
-        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #111827; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #3a6a9a; border-radius: 10px; }
@@ -572,6 +570,7 @@
         .rank-2 { color: #c0c0c0; font-weight: bold; }
         .rank-3 { color: #cd7f32; font-weight: bold; }
 
+        /* КАРТА */
         .map-preview {
             background: linear-gradient(145deg, #111827, #0f1422);
             border-radius: 28px;
@@ -581,33 +580,24 @@
             cursor: pointer;
             text-align: center;
         }
-        .map-preview:hover { transform: scale(1.02); box-shadow: 0 20px 30px -15px rgba(0,0,0,0.5); }
-        .map-preview .map-image {
+        .map-preview:hover {
+            transform: scale(1.01);
+            box-shadow: 0 20px 30px -15px rgba(0,0,0,0.5);
+        }
+        .map-preview iframe {
             width: 100%;
-            height: 200px;
-            background: radial-gradient(circle at 30% 40%, #2a4a7a, #1a3a5a);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 500px;
+            border: none;
+            display: block;
         }
-        .map-preview .map-image::before {
-            content: "🗺️";
-            font-size: 4rem;
-            opacity: 0.5;
+        .map-overlay {
+            padding: 15px;
+            background: rgba(10,14,26,0.9);
+            text-align: center;
         }
-        .map-preview .map-image::after {
-            content: "JOTUNHEIM";
-            position: absolute;
-            bottom: 20px;
-            font-size: 0.8rem;
-            opacity: 0.6;
-            letter-spacing: 2px;
+        body.light-theme .map-overlay {
+            background: rgba(245, 230, 200, 0.95);
         }
-        body.light-theme .map-preview .map-image {
-            background: radial-gradient(circle at 30% 40%, #c49a6c, #a87b4a);
-        }
-        .map-overlay { padding: 20px; background: rgba(10,14,26,0.9); }
 
         .feature-card {
             background: linear-gradient(145deg, #111827, #0f1422);
@@ -839,7 +829,7 @@
             footer { padding: 32px 20px 24px; gap: 12px; }
             footer .logo { font-size: 1.2rem; }
             footer p { font-size: 0.8rem; }
-            .map-preview .map-image { height: 150px; }
+            .map-preview iframe { height: 350px; }
         }
         
         @media (max-width: 768px) {
@@ -862,6 +852,7 @@
             .mobile-ip-panel i {
                 font-size: 1.2rem;
             }
+            .map-preview iframe { height: 280px; }
         }
     </style>
 </head>
@@ -946,24 +937,23 @@
         </div>
     </section>
 
+    <!-- КАРТА С ВАШЕЙ ССЫЛКОЙ -->
     <section id="map" class="section" data-aos="fade-up">
-    <h2 class="section-title">🗺️ Карта мира</h2>
-    <div class="section-subhead">Исследуй территории JOTUNHEIM в реальном времени</div>
-    <div class="map-preview" id="mapLink" data-aos="zoom-in">
-        <iframe 
-            src="http://jotunheim.ru-mc.ru:18592/"
-            width="100%" 
-            height="500" 
-            frameborder="0" 
-            style="border-radius: 24px; border: 1px solid #5a8aba; background: #0a0e1a;"
-            allowfullscreen>
-        </iframe>
-        <div class="map-overlay" style="margin-top: 15px; background: transparent; padding: 10px;">
-            <i class="fas fa-map-marked-alt" style="font-size: 1.2rem; color: #5a8aba;"></i>
-            <p style="margin-top: 5px; font-size: 0.8rem; opacity: 0.8;">Интерактивная карта мира | Нажмите для управления</p>
+        <h2 class="section-title">🗺️ Карта мира</h2>
+        <div class="section-subhead">Исследуй территории JOTUNHEIM в реальном времени</div>
+        <div class="map-preview" id="mapLink" data-aos="zoom-in">
+            <iframe 
+                src="http://jotunheim.ru-mc.ru:18592/"
+                title="Карта мира JOTUNHEIM"
+                loading="lazy"
+                allowfullscreen>
+            </iframe>
+            <div class="map-overlay">
+                <i class="fas fa-map-marked-alt" style="font-size: 1.2rem; color: #5a8aba;"></i>
+                <p style="margin-top: 8px; font-size: 0.8rem;">Интерактивная карта | Управление мышью</p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <section id="howto" class="section" data-aos="fade-up">
         <div class="steps-wrapper">
@@ -1177,7 +1167,6 @@
             
             const objectGroup = new THREE.Group();
             
-            // Текстуры 512x512
             const canvasMoon = document.createElement('canvas');
             canvasMoon.width = 512;
             canvasMoon.height = 512;
@@ -1428,13 +1417,6 @@
             discordJoin.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.open('https://discord.gg/uzAvmYYn', '_blank');
-            });
-        }
-        
-        const mapLink = document.getElementById('mapLink');
-        if (mapLink) {
-            mapLink.addEventListener('click', () => {
-                alert('Интерактивная карта скоро откроется!');
             });
         }
         
