@@ -32,8 +32,6 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
         
-        /* Убираем картинку - просто градиент */
-        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #111827; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #3a6a9a; border-radius: 10px; }
@@ -310,11 +308,6 @@
         .accent { color: #8acaff; }
         body.light-theme .accent { color: #c49a6c; }
 
-        /* Убираем снежинки */
-        .snowflakes {
-            display: none;
-        }
-
         .object-container {
             position: fixed;
             bottom: 30px;
@@ -572,6 +565,20 @@
         .rank-2 { color: #c0c0c0; font-weight: bold; }
         .rank-3 { color: #cd7f32; font-weight: bold; }
 
+        .online-count-badge {
+            background: linear-gradient(135deg, #3a6a9a, #1a4a7a);
+            border-radius: 60px;
+            padding: 8px 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        body.light-theme .online-count-badge {
+            background: linear-gradient(135deg, #c49a6c, #a87b4a);
+        }
+
         .map-preview {
             background: linear-gradient(145deg, #111827, #0f1422);
             border-radius: 28px;
@@ -810,6 +817,12 @@
             animation: explodeFlashAnim 0.4s ease-out forwards;
         }
 
+        .loading-players {
+            text-align: center;
+            padding: 30px;
+            color: #9ca3af;
+        }
+
         @media (max-width: 900px) {
             .grid-3col, .testimonial-grid { grid-template-columns: 1fr; }
             .steps-wrapper { flex-direction: column; }
@@ -877,7 +890,7 @@
 
     <div class="mobile-ip-panel" id="mobileIpPanel">
         <i class="fas fa-copy"></i>
-        <span>mc.jotunheim.ru</span>
+        <span>Jotunheim.ru-mc.ru</span>
         <span class="ip-label">нажми для копирования</span>
     </div>
 
@@ -929,21 +942,27 @@
     </section>
 
     <section id="leaderboard" class="section" data-aos="fade-up">
-        <h2 class="section-title">🏆 Топ игроков</h2>
-        <div class="section-subhead">Самые активные строители и шахтёры JOTUNHEIM</div>
+        <h2 class="section-title">🏆 Топ игроков онлайн</h2>
+        <div class="section-subhead">Кто сейчас на сервере — обновляется каждые 30 секунд</div>
+        
+        <!-- Бейдж с количеством онлайн -->
+        <div class="online-count-badge" id="onlineCountBadge">
+            <i class="fas fa-users"></i>
+            <span id="onlineCount">0</span> игроков онлайн
+        </div>
+        
         <div class="leaderboard" data-aos="zoom-in">
-            <div class="leaderboard-header"><span>#</span><span>Игрок</span><span>Время в игре</span><span>Постройки</span></div>
-            <div class="leaderboard-row"><span class="rank-1">👑 1</span><span><i class="fas fa-star" style="color:#ffd700;"></i> Pica_Kas</span><span>1 день 3 часа</span><span>0</span></div>
-            <div class="leaderboard-row"><span class="rank-2">🥈 2</span><span><i class="fas fa-pickaxe"></i> DriJoke</span><span>10 часов 31 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span class="rank-3">🥉 3</span><span><i class="fas fa-tree"></i> DOMINO_no_mi</span><span>6 часов 32 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span>4</span><span><i class="fas fa-ship"></i> erik123321123</span><span>5 часов 56 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span>5</span><span><i class="fas fa-mountain"></i>  __s_o_i_d__</span><span>4 часа 37 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span>6</span><span><i class="fas fa-hammer"></i> _Legend_</span><span>3 часа 30 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span>7</span><span><i class="fas fa-farm"></i> 4elik</span><span>2 часа 14 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span>8</span><span><i class="fas fa-gem"></i> teapot3050</span><span>1 часа 30 мин</span><span>0</span></div>
-            <div class="leaderboard-row"><span>10</span><span><i class="fas fa-dragon"></i> __a_s_t_x__</span><span> 5 минут</span><span>0</span></div>
-            <div class="leaderboard-row"><span>9</span><span><i class="fas fa-bed"></i> </span><span></span><span>0</span></div>
-            
+            <div class="leaderboard-header">
+                <span>#</span>
+                <span>Игрок</span>
+                <span>Статус</span>
+                <span>Сейчас в игре</span>
+            </div>
+            <div id="online-players-list">
+                <div class="loading-players">
+                    <i class="fas fa-spinner fa-spin"></i> Загрузка игроков...
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1032,7 +1051,7 @@
             <p style="max-width: 500px; margin: 0 auto;">Версии Minecraft: 1.20.4 — 1.21.1 | Java Edition</p>
             
             <div class="ip-display" id="ipDisplay">
-                <span>mc.jotunheim.ru</span>
+                <span>Jotunheim.ru-mc.ru</span>
                 <div class="ip-hint" id="ipHint">🌙 Нажми на луну/солнце 🌙</div>
             </div>
             
@@ -1085,7 +1104,7 @@
         });
 
         const mobileIpPanel = document.getElementById('mobileIpPanel');
-        const ipToCopy = 'mc.jotunheim.ru';
+        const ipToCopy = 'Jotunheim.ru-mc.ru';
         
         function showCopyToast(message) {
             const oldToast = document.querySelector('.copy-toast');
@@ -1148,7 +1167,76 @@
             }
         }
 
-        // 3D объект
+        // ========== ЖИВОЙ ТОП ОНЛАЙНА ==========
+        const SERVER_IP = 'Jotunheim.ru-mc.ru';
+        
+        async function updateOnlinePlayers() {
+            const container = document.getElementById('online-players-list');
+            const onlineCountSpan = document.getElementById('onlineCount');
+            
+            if (!container) return;
+            
+            try {
+                // Используем бесплатный API mcsrvstat.us
+                const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+                const data = await response.json();
+                
+                if (data.online) {
+                    const players = data.players.list || [];
+                    const onlineCount = data.players.online;
+                    
+                    // Обновляем счетчик онлайн
+                    if (onlineCountSpan) {
+                        onlineCountSpan.textContent = onlineCount;
+                    }
+                    
+                    if (players.length > 0) {
+                        // Показываем топ-15 игроков онлайн
+                        container.innerHTML = players.slice(0, 15).map((player, index) => `
+                            <div class="leaderboard-row">
+                                <span>${index === 0 ? '👑' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}</span>
+                                <span><i class="fas fa-user"></i> ${player}</span>
+                                <span><i class="fas fa-circle" style="color: #4CAF50; font-size: 0.7rem;"></i> Онлайн</span>
+                                <span><i class="fas fa-gamepad"></i> сейчас</span>
+                            </div>
+                        `).join('');
+                    } else {
+                        container.innerHTML = `
+                            <div class="leaderboard-row">
+                                <span colspan="4" style="text-align: center; grid-column: 1 / -1;">
+                                    😴 Сейчас никого нет, зайди первым!
+                                </span>
+                            </div>
+                        `;
+                    }
+                } else {
+                    container.innerHTML = `
+                        <div class="leaderboard-row">
+                            <span colspan="4" style="text-align: center; grid-column: 1 / -1;">
+                                ❌ Сервер офлайн. Попробуй зайти позже!
+                            </span>
+                        </div>
+                    `;
+                    if (onlineCountSpan) onlineCountSpan.textContent = '0';
+                }
+            } catch (error) {
+                console.error('Ошибка получения данных:', error);
+                container.innerHTML = `
+                    <div class="leaderboard-row">
+                        <span colspan="4" style="text-align: center; grid-column: 1 / -1;">
+                            ⚠️ Не удалось загрузить список игроков. Проверьте подключение.
+                        </span>
+                    </div>
+                `;
+            }
+        }
+
+        // Запускаем обновление топа
+        updateOnlinePlayers();
+        // Обновляем каждые 30 секунд
+        setInterval(updateOnlinePlayers, 30000);
+
+        // 3D объект (луна/солнце)
         const objectContainer = document.getElementById('objectBtn');
         const canvas = document.getElementById('objectCanvas');
         
@@ -1172,7 +1260,7 @@
             
             const objectGroup = new THREE.Group();
             
-            // Текстуры 512x512
+            // Текстуры
             const canvasMoon = document.createElement('canvas');
             canvasMoon.width = 512;
             canvasMoon.height = 512;
@@ -1194,8 +1282,6 @@
                 ctxMoon.fill();
             }
             const moonTexture = new THREE.CanvasTexture(canvasMoon);
-            moonTexture.wrapS = THREE.RepeatWrapping;
-            moonTexture.wrapT = THREE.RepeatWrapping;
             
             const canvasSun = document.createElement('canvas');
             canvasSun.width = 512;
@@ -1213,8 +1299,6 @@
                 ctxSun.fill();
             }
             const sunTexture = new THREE.CanvasTexture(canvasSun);
-            sunTexture.wrapS = THREE.RepeatWrapping;
-            sunTexture.wrapT = THREE.RepeatWrapping;
             
             const moonMaterial = new THREE.MeshStandardMaterial({
                 map: moonTexture,
@@ -1429,7 +1513,7 @@
         const mapLink = document.getElementById('mapLink');
         if (mapLink) {
              mapLink.addEventListener('click', (e) => {
-                e.preventDefault(); // предотвращает возможное стандартное поведение
+                e.preventDefault();
                 window.open('http://jotunheim.ru-mc.ru:18592/', '_blank');
             });
         }
@@ -1490,4 +1574,4 @@
         }, 2000);
     </script>
 </body>
-</html>
+            </html>
